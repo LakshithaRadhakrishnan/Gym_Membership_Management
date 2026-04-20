@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Membership Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Gym Member Management</h2>
+
+        <!-- Add Member Form -->
+        <form action="/add" method="POST" class="form-container">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="phone" placeholder="Phone Number" required>
+            <select name="package">
+                <option value="Silver">Silver (6 Months)</option>
+                <option value="Gold">Gold (1 Year)</option>
+                <option value="Diamond">Diamond (2 Years)</option>
+            </select>
+            <select name="trainer_id">
+                <option value="">Assign Trainer (optional)</option>
+                {% for trainer in trainers %}
+                <option value="{{ trainer[0] }}">{{ trainer[1] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn">Add Member</button>
+        </form>
+
+        <h3>Existing Members</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Package</th>
+                <th>Trainer</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+            {% for member in members %}
+            <tr>
+                <td>{{ member[1] }}</td>
+                <td>{{ member[2] }}</td>
+                <td>{{ member[3] }}</td>
+                <td>{{ member[4] }}</td>
+                <td>
+                    {% for trainer in trainers %}
+                        {% if trainer[0] == member[7] %}{{ trainer[1] }}{% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ member[5] }}</td>
+                <td>{{ member[6] }}</td>
+                <td>
+                    <div class="btn-container">
+                        <!-- Edit Button -->
+                        <button class="btn btn-edit" onclick="openEditForm('{{ member[0] }}', '{{ member[1] }}', '{{ member[2] }}', '{{ member[3] }}', '{{ member[4] }}', '{{ member[7] }}')">Edit</button>
+
+                        <!-- Delete Button -->
+                        <a href="/delete/{{ member[0] }}" class="btn btn-delete">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Hidden Update Form -->
+        <div id="editFormContainer" class="hidden">
+            <h3>Update Member</h3>
+            <form id="editForm" method="POST">
+                <input type="hidden" name="id" id="editId">
+                <input type="text" name="name" id="editName" required>
+                <input type="email" name="email" id="editEmail" required>
+                <input type="text" name="phone" id="editPhone" required>
+                <select name="package" id="editPackage">
+                    <option value="Silver">Silver (6 Months)</option>
+                    <option value="Gold">Gold (1 Year)</option>
+                    <option value="Diamond">Diamond (2 Years)</option>
+                </select>
+                <select name="trainer_id" id="editTrainer">
+                    <option value="">Assign Trainer</option>
+                    {% for trainer in trainers %}
+                    <option value="{{ trainer[0] }}">{{ trainer[1] }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn">Update</button>
+                <button type="button" class="btn btn-cancel" onclick="closeEditForm()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openEditForm(id, name, email, phone, packageVal, trainerId) {
+            document.getElementById("editFormContainer").style.display = "block";
+            document.getElementById("editId").value = id;
+            document.getElementById("editName").value = name;
+            document.getElementById("editEmail").value = email;
+            document.getElementById("editPhone").value = phone;
+            document.getElementById("editPackage").value = packageVal;
+            document.getElementById("editTrainer").value = trainerId;
+            document.getElementById("editForm").action = "/update/" + id;
+        }
+
+        function closeEditForm() {
+            document.getElementById("editFormContainer").style.display = "none";
+        }
+    </script>
+</body>
+</html>

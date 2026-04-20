@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deleted Members</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Deleted Members Log</h1>
+    <a href="{{ url_for('member_page') }}">← Back to Members</a>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Package</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Trainer ID</th>
+                <th>Deleted At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in deleted_members %}
+            <tr>
+                <td>{{ member[0] }}</td>
+                <td>{{ member[1] }}</td>
+                <td>{{ member[2] }}</td>
+                <td>{{ member[3] }}</td>
+                <td>{{ member[4] }}</td>
+                <td>{{ member[5] }}</td>
+                <td>{{ member[6] }}</td>
+                <td>{{ member[7] }}</td>
+                <td>{{ member[8] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

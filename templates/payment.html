@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body style="background-color: #111; color: #fff; font-family: Arial, sans-serif; padding: 20px;">
+
+    <h1 style="text-align: center;">Payments</h1>
+
+    <form method="POST" action="{{ url_for('add_payment') }}" style="max-width: 500px; margin: 20px auto; background-color: #222; padding: 20px; border-radius: 10px;">
+        <select name="member_id" id="member_id" required style="width: 100%; margin-bottom: 15px;">
+            {% for member in members %}
+                <option value="{{ member[0] }}">{{ member[1] }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="amount">Amount:</label>
+        <input type="number" name="amount" id="amount" required style="width: 100%; margin-bottom: 15px;">
+
+        <label for="method">Payment Method:</label>
+        <select name="method" id="method" required style="width: 100%; margin-bottom: 15px;">
+            <option>Cash</option>
+            <option>Card</option>
+            <option>UPI</option>
+        </select>
+
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #00aaff; color: white; border: none; border-radius: 5px;">Add Payment</button>
+    </form>
+
+    <h2 style="text-align: center;">Payment History</h2>
+    <table style="width: 90%; margin: auto; border-collapse: collapse; margin-top: 20px;">
+        <tr style="background-color: #333; color: #fff;">
+            <th>ID</th>
+            <th>Member</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Method</th>
+            <th>Action</th>
+        </tr>
+        {% for p in payments %}
+        <tr style="text-align: center; background-color: #222;">
+            <td>{{ p[0] }}</td>
+            <td>{{ p[1] }}</td>  <!-- Member name -->
+            <td>{{ p[2] }}</td>  <!-- Amount -->
+            <td>{{ p[3] }}</td>  <!-- Date -->
+            <td>{{ p[4] }}</td>  <!-- Method -->
+            <td><a href="{{ url_for('delete_payment', id=p[0]) }}" style="color: red;">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Optional debug section to view members -->
+    <!--
+    <div style="margin-top: 40px; text-align: center;">
+        <h3>Debug: Members Loaded</h3>
+        <ul>
+            {% for m in members %}
+                <li>{{ m }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    -->
+</html>

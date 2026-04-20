@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trainer Management</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='trainer.css') }}">
+</head>
+<body>
+    <h2>Trainer Management</h2>
+
+    <!-- Add Trainer Form -->
+    <form action="/trainer/add" method="POST">
+        <h3>Add Trainer</h3>
+        <label>Name:</label>
+        <input type="text" name="name" required><br><br>
+
+        <label>Specialization:</label>
+        <input type="text" name="specialization" required><br><br>
+
+        <label>Phone:</label>
+        <input type="text" name="phone" required><br><br>
+
+        <input type="submit" value="Add Trainer">
+    </form>
+
+    <hr>
+
+    <!-- Trainer Table -->
+    <h3>Trainer List</h3>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+        {% for trainer in trainers %}
+        <tr>
+            <td>{{ trainer[1] }}</td>
+            <td>{{ trainer[2] }}</td>
+            <td>{{ trainer[3] }}</td>
+            <td>
+                <button onclick="showEditForm('{{ trainer[0] }}', '{{ trainer[1] }}', '{{ trainer[2] }}', '{{ trainer[3] }}')">Edit</button>
+                <a href="/trainer/delete/{{ trainer[0] }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <hr>
+
+    <!-- Edit Trainer Form -->
+    <div id="editFormContainer" style="display:none;">
+        <h3>Update Trainer</h3>
+        <form action="/trainer_update" method="POST" id="editForm">
+            <label>Name:</label>
+            <input type="text" name="name" id="editName" required><br><br>
+
+            <label>Specialization:</label>
+            <input type="text" name="specialization" id="editSpecialization" required><br><br>
+
+            <label>Phone:</label>
+            <input type="text" name="phone" id="editPhone" required><br><br>
+
+            <input type="submit" value="Update Trainer">
+            <button type="button" onclick="hideEditForm()">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        function showEditForm(id, name, specialization, phone) {
+            document.getElementById("editForm").action = "/trainer_update/" + id;
+            document.getElementById("editName").value = name;
+            document.getElementById("editSpecialization").value = specialization;
+            document.getElementById("editPhone").value = phone;
+            document.getElementById("editFormContainer").style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function hideEditForm() {
+            document.getElementById("editFormContainer").style.display = "none";
+        }
+    </script>
+</body>
+</html>

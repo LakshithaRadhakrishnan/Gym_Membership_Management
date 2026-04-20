@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gym Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Gym Management System</h1>
+        <div class="buttons">
+            <a href="{{ url_for('member_page') }}"><button>Member Management</button></a>
+            <a href="{{ url_for('trainer_page') }}"><button>Trainer Management</button></a>
+            <a href="{{ url_for('payment_page') }}"><button>Payment Management</button></a>
+            <a href="{{ url_for('deleted_members_page') }}"><button>Deleted Members</button></a>
+
+
+        </div>
+    </div>
+</body>
+</html>
